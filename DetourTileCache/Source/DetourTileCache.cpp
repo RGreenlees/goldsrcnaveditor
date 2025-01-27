@@ -1022,3 +1022,16 @@ dtStatus dtTileCache::removeOffMeshConnection(const dtOffMeshConnectionRef ref)
 
 	return DT_SUCCESS;
 }
+
+int dtTileCache::getActiveOffMeshCount()
+{
+	int Result = 0;
+	for (int i = 0; i < m_params.maxOffMeshConnections; ++i)
+	{
+		const dtOffMeshConnection* con = getOffMeshConnection(i);
+		if (con->state != DT_OFFMESH_EMPTY && con->state != DT_OFFMESH_REMOVING)
+			Result++;
+	}
+
+	return Result;
+}

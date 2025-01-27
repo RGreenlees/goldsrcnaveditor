@@ -34,6 +34,7 @@
 #include "Recast.h"
 #include "RecastDebugDraw.h"
 #include "DetourDebugDraw.h"
+#include "DetourTileCache.h"
 
 #include "NavProfiles.h"
 
@@ -128,7 +129,7 @@ void OffMeshConnectionTool::handleClick(const float* /*s*/, const float* p, bool
 
 			if (!ConnArea || !ConnFlag) { return; }
 
-			m_sample->addOffMeshConnection(m_hitPos, p, m_sample->getAgentRadius(), ConnArea->AreaId, ConnFlag->FlagId, m_bidir ? 1 : 0);
+			m_sample->addOffMeshConnection(m_hitPos, p, 8.0f, ConnArea->AreaId, ConnFlag->FlagId, m_bidir ? 1 : 0);
 			m_hitPosSet = false;
 		}
 	}
@@ -181,5 +182,14 @@ void OffMeshConnectionTool::handleRenderOverlay(double* proj, double* model, int
 	else
 	{
 		imguiDrawText(280, h-40, IMGUI_ALIGN_LEFT, "LMB: Set connection end point and finish.", imguiRGBA(255,255,255,192));	
+	}
+
+	dtTileCache* CurrentCache = m_sample->getTileCache();
+	
+	if (CurrentCache)
+	{
+		char ConCount[64];
+		sprintf(ConCount, "Total Connection Count: %d / %d", CurrentCache->getActiveOffMeshCount(), CurrentCache->getOffMeshCount());
+		imguiDrawText(280, h - 60, IMGUI_ALIGN_LEFT, ConCount, imguiRGBA(255, 255, 255, 192));
 	}
 }

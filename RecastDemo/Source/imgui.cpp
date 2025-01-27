@@ -1367,17 +1367,17 @@ bool addFlagRow(const int FlagIndex)
 	int TotalWidth = w - 10;
 
 	int IDWidth = (int)(ceilf((float)TotalWidth * 0.1f));
-	int NameWidth = (int)(ceilf((float)TotalWidth * 0.225f));
-	int TechNameWidth = (int)(ceilf((float)TotalWidth * 0.225f));
-	int FlagWidth = (int)(ceilf((float)TotalWidth * 0.225f));
+	int NameWidth = (int)(ceilf((float)TotalWidth * 0.3f));
+	int TechNameWidth = (int)(ceilf((float)TotalWidth * 0.3f));
+	int TeleportWidth = (int)(ceilf((float)TotalWidth * 0.1f));
 	int ColourWidth = (int)(ceilf((float)TotalWidth * 0.1f));
 	int DeleteWidth = (int)(ceilf((float)TotalWidth * 0.1f));
 
 	int IDStartX = x + 5;
 	int NameStartX = IDStartX + IDWidth;
 	int TechNameStartX = NameStartX + NameWidth;
-	int FlagStartX = TechNameStartX + TechNameWidth;
-	int ColourStartX = FlagStartX + FlagWidth;
+	int TeleportStartX = TechNameStartX + TechNameWidth;
+	int ColourStartX = TeleportStartX + TeleportWidth;
 	int DeleteStartX = ColourStartX + ColourWidth;
 
 	int HeaderStartY = y + (h - (TEXT_HEIGHT + 10));
@@ -1386,6 +1386,7 @@ bool addFlagRow(const int FlagIndex)
 	addGfxCmdText(IDStartX, HeaderStartY, IMGUI_ALIGN_LEFT, "ID", imguiRGBA(255, 255, 255, 200));
 	addGfxCmdText(NameStartX, HeaderStartY, IMGUI_ALIGN_LEFT, "Descriptive Name", imguiRGBA(255, 255, 255, 200));
 	addGfxCmdText(TechNameStartX, HeaderStartY, IMGUI_ALIGN_LEFT, "Technical Name", imguiRGBA(255, 255, 255, 200));
+	addGfxCmdText(TeleportStartX, HeaderStartY, IMGUI_ALIGN_LEFT, "Teleport Type", imguiRGBA(255, 255, 255, 200));
 	addGfxCmdText(ColourStartX, HeaderStartY, IMGUI_ALIGN_LEFT, "Flag Color", imguiRGBA(255, 255, 255, 200));
 
 	char RowEntry[128];
@@ -1432,7 +1433,7 @@ bool addFlagRow(const int FlagIndex)
 		int endWidgetW = g_state.widgetW;
 
 		g_state.widgetX = TechNameStartX;
-		g_state.widgetW = FlagStartX - TechNameStartX - 20;
+		g_state.widgetW = TeleportStartX - TechNameStartX - 20;
 		g_state.widgetY = RowStartY + 10;
 
 		if (imguiButton(RowEntry, true))
@@ -1452,6 +1453,24 @@ bool addFlagRow(const int FlagIndex)
 	{
 		addGfxCmdText(TechNameStartX, RowStartY, IMGUI_ALIGN_LEFT, RowEntry, imguiRGBA(255, 255, 255, 200));
 	}
+
+	int beforeTeleportX = g_state.widgetX;
+	int beforeTeleportY = g_state.widgetY;
+	int beforeTeleportW = g_state.widgetW;
+
+	g_state.widgetX = TeleportStartX;
+	g_state.widgetW = ColourStartX - TeleportStartX - 20;
+	g_state.widgetY = RowStartY + 10;
+
+	if (imguiCheck("", FlagDef->bTeleport, FlagDef->bCustom))
+	{
+		FlagDef->bTeleport = !FlagDef->bTeleport;
+	}
+
+	g_state.widgetX = beforeTeleportX;
+	g_state.widgetY = beforeTeleportY;
+	g_state.widgetW = beforeTeleportW;
+
 
 	int beforeColourX = g_state.widgetX;
 	int beforeColourY = g_state.widgetY;

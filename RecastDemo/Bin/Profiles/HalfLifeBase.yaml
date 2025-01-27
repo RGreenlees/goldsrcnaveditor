@@ -2,13 +2,14 @@
 game_name: Half-Life Base
 game_directory: E:\SteamLibrary\steamapps\common\Half-Life\valve
 
-flag_count: 7
+flag_count: 8
 flags:
 	id: 0
 		flag_index: 31
 		flag_id: 2147483648
 		flag_name: Disabled
 		flag_tech_name: NAV_FLAG_DISABLED
+		is_teleport: false
 		is_custom: false
 		R: 8.0
 		G: 8.0
@@ -18,6 +19,7 @@ flags:
 		flag_id: 1
 		flag_name: Walk
 		flag_tech_name: NAV_FLAG_WALK
+		is_teleport: false
 		is_custom: false
 		R: 0.0
 		G: 192.0
@@ -27,6 +29,7 @@ flags:
 		flag_id: 2
 		flag_name: Crouch
 		flag_tech_name: NAV_FLAG_CROUCH
+		is_teleport: false
 		is_custom: false
 		R: 9.0
 		G: 130.0
@@ -36,6 +39,7 @@ flags:
 		flag_id: 4
 		flag_name: Jump
 		flag_tech_name: NAV_FLAG_JUMP
+		is_teleport: false
 		is_custom: false
 		R: 200.0
 		G: 200.0
@@ -45,6 +49,7 @@ flags:
 		flag_id: 8
 		flag_name: Ladder
 		flag_tech_name: NAV_FLAG_LADDER
+		is_teleport: false
 		is_custom: false
 		R: 64.0
 		G: 64.0
@@ -54,6 +59,7 @@ flags:
 		flag_id: 16
 		flag_name: Fall
 		flag_tech_name: NAV_FLAG_FALL
+		is_teleport: false
 		is_custom: false
 		R: 255.0
 		G: 64.0
@@ -63,12 +69,23 @@ flags:
 		flag_id: 32
 		flag_name: Platform
 		flag_tech_name: NAV_FLAG_PLATFORM
+		is_teleport: false
 		is_custom: false
 		R: 255.0
 		G: 32.0
 		B: 255.0
+	id: 7
+		flag_index: 6
+		flag_id: 64
+		flag_name: Teleport
+		flag_tech_name: NAV_FLAG_TELEPORT
+		is_teleport: true
+		is_custom: false
+		R: 255.0
+		G: 255.0
+		B: 255.0
 
-area_count: 5
+area_count: 6
 areas:
 	id: 0
 		area_id: 60
@@ -84,7 +101,7 @@ areas:
 		area_name: Walk
 		area_tech_name: NAV_AREA_WALK
 		is_custom: false
-		flag_index: 0
+		flag_index: 1
 		R: 0.0
 		G: 192.0
 		B: 255.0
@@ -93,7 +110,7 @@ areas:
 		area_name: Crouch
 		area_tech_name: NAV_AREA_CROUCH
 		is_custom: false
-		flag_index: 1
+		flag_index: 2
 		R: 9.0
 		G: 130.0
 		B: 150.0
@@ -102,7 +119,7 @@ areas:
 		area_name: Obstructed
 		area_tech_name: NAV_AREA_OBSTRUCTED
 		is_custom: false
-		flag_index: 2
+		flag_index: 3
 		R: 255.0
 		G: 64.0
 		B: 64.0
@@ -111,12 +128,21 @@ areas:
 		area_name: Hazard
 		area_tech_name: NAV_AREA_HAZARD
 		is_custom: false
-		flag_index: 0
+		flag_index: 1
 		R: 192.0
 		G: 32.0
 		B: 32.0
+	id: 5
+		area_id: 5
+		area_name: Teleport
+		area_tech_name: NAV_AREA_TELEPORT
+		is_custom: false
+		flag_index: 6
+		R: 255.0
+		G: 255.0
+		B: 255.0
 
-connection_count: 5
+connection_count: 6
 connections:
 	id: 0
 		connection_name: Walk
@@ -148,12 +174,17 @@ connections:
 		area_index: 1
 		flag_index: 5
 		is_custom: false
+	id: 6
+		connection_name: Teleport
+		area_index: 5
+		flag_index: 6
+		is_custom: false
 
 mesh_count: 1
 meshes:
 	id: 0
 		mesh_name: Nav Mesh
-		technical_name: NAV_MESH_PLAYER
+		technical_name: NAV_MESH_NEW
 		agent_radius: 16.0
 		agent_stand_height: 72.0
 		agent_crouch_height: 32.0
@@ -166,8 +197,8 @@ agent_profiles:
 		agent_name: Base Player
 		technical_name: NAV_PROFILE_PLAYER
 		mesh_index: 0
-		area_costs: {0.0,1.0,2.0,4.0,10.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0}
-		movement_flags: 63
+		area_costs: {1.0,1.0,2.0,2.0,10.0,0.1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0}
+		movement_flags: 127
 
-nav_hint_count: 1
+nav_hint_count: 0
 nav_hints:

@@ -51,6 +51,7 @@ typedef struct _NAV_FLAG_DEF
 	unsigned int NavFlagIndex = 0;
 	unsigned int FlagId = 0;
 	bool bCustom = false;
+	bool bTeleport = false;
 	float R = 0.0f;
 	float G = 0.0f;
 	float B = 0.0f;

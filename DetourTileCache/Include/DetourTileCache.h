@@ -117,6 +117,7 @@ public:
 	inline const dtCompressedTile* getTile(const int i) const { return &m_tiles[i]; }
 	
 	inline int getOffMeshCount() const { return m_params.maxOffMeshConnections; }
+	int getActiveOffMeshCount();
 	inline int getObstacleCount() const { return m_params.maxObstacles; }
 	inline const dtTileCacheObstacle* getObstacle(const int i) const { return &m_obstacles[i]; }
 	inline dtOffMeshConnection* getOffMeshConnection(const int i) const { return &m_offMeshConnections[i]; }
@@ -286,14 +287,14 @@ private:
 	dtOffMeshConnection* m_offMeshConnections;
 	dtOffMeshConnection* m_nextFreeOffMeshConnection;
 	
-	static const int MAX_REQUESTS = 64;
+	static const int MAX_REQUESTS = 512;
 	ObstacleRequest m_reqs[MAX_REQUESTS];
 	int m_nreqs;
 
 	OffMeshRequest m_OffMeshReqs[MAX_REQUESTS];
 	int m_nOffMeshReqs;
 	
-	static const int MAX_UPDATE = 64;
+	static const int MAX_UPDATE = 512;
 	dtCompressedTileRef m_update[MAX_UPDATE];
 	int m_nupdate;
 };

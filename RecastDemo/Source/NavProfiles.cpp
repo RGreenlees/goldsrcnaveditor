@@ -117,11 +117,24 @@ NavGameProfile* CreateNewGameProfile()
 	DefaultHazardArea.B = 32.0f;
 	DefaultHazardArea.DebugColor = duRGBA2(192, 32, 32, 255);
 
+	NavAreaDefinition DefaultTeleportArea;
+	DefaultTeleportArea.NavAreaIndex = 5;
+	DefaultTeleportArea.AreaName = "Teleport";
+	DefaultTeleportArea.TechnicalName = "NAV_AREA_TELEPORT";
+	DefaultTeleportArea.AreaId = 5;
+	DefaultTeleportArea.FlagIndex = 6;
+	DefaultTeleportArea.bCustom = false;
+	DefaultTeleportArea.R = 255.0f;
+	DefaultTeleportArea.G = 255.0f;
+	DefaultTeleportArea.B = 255.0f;
+	DefaultTeleportArea.DebugColor = duRGBA2(255, 255, 255, 255);
+
 	NewProfile.AreaDefinitions.push_back(DefaultNullArea);
 	NewProfile.AreaDefinitions.push_back(DefaultWalkArea);
 	NewProfile.AreaDefinitions.push_back(DefaultCrouchArea);
 	NewProfile.AreaDefinitions.push_back(DefaultObstructedArea);
 	NewProfile.AreaDefinitions.push_back(DefaultHazardArea);
+	NewProfile.AreaDefinitions.push_back(DefaultTeleportArea);
 
 	NavFlagDefinition DisabledFlagDef;
 	DisabledFlagDef.NavFlagIndex = 31;
@@ -200,6 +213,18 @@ NavGameProfile* CreateNewGameProfile()
 	PlatformFlagDef.B = 255.0f;
 	PlatformFlagDef.DebugColor = duRGBA2(255, 32, 255, 255);
 
+	NavFlagDefinition TeleportFlagDef;
+	TeleportFlagDef.NavFlagIndex = 6;
+	TeleportFlagDef.FlagName = "Teleport";
+	TeleportFlagDef.TechnicalName = "NAV_FLAG_TELEPORT";
+	TeleportFlagDef.bTeleport = true;
+	TeleportFlagDef.FlagId = 1 << 6;
+	TeleportFlagDef.bCustom = false;
+	TeleportFlagDef.R = 255.0f;
+	TeleportFlagDef.G = 255.0f;
+	TeleportFlagDef.B = 255.0f;
+	TeleportFlagDef.DebugColor = duRGBA2(255, 255, 255, 255);
+
 	NewProfile.FlagDefinitions.push_back(DisabledFlagDef);
 	NewProfile.FlagDefinitions.push_back(WalkFlagDef);
 	NewProfile.FlagDefinitions.push_back(CrouchFlagDef);
@@ -207,48 +232,56 @@ NavGameProfile* CreateNewGameProfile()
 	NewProfile.FlagDefinitions.push_back(LadderFlagDef);
 	NewProfile.FlagDefinitions.push_back(FallFlagDef);
 	NewProfile.FlagDefinitions.push_back(PlatformFlagDef);
+	NewProfile.FlagDefinitions.push_back(TeleportFlagDef);
 
 	NavOffMeshConnectionDefinition WalkMoveDef;
 	WalkMoveDef.ConnIndex = 0;
 	WalkMoveDef.ConnName = "Walk";
 	WalkMoveDef.AreaIndex = 1;
-	WalkMoveDef.FlagIndex = 1;
+	WalkMoveDef.FlagIndex = 0;
 	WalkMoveDef.bCustom = false;
 
 	NavOffMeshConnectionDefinition CrouchMoveDef;
 	CrouchMoveDef.ConnIndex = 1;
 	CrouchMoveDef.ConnName = "Crouch";
 	CrouchMoveDef.AreaIndex = 2;
-	CrouchMoveDef.FlagIndex = 2;
+	CrouchMoveDef.FlagIndex = 1;
 	CrouchMoveDef.bCustom = false;
 
 	NavOffMeshConnectionDefinition JumpMoveDef;
 	JumpMoveDef.ConnIndex = 2;
 	JumpMoveDef.ConnName = "Jump";
 	JumpMoveDef.AreaIndex = 1;
-	JumpMoveDef.FlagIndex = 3;
+	JumpMoveDef.FlagIndex = 2;
 	JumpMoveDef.bCustom = false;
 
 	NavOffMeshConnectionDefinition LadderMoveDef;
 	LadderMoveDef.ConnIndex = 3;
 	LadderMoveDef.ConnName = "Ladder";
 	LadderMoveDef.AreaIndex = 1;
-	LadderMoveDef.FlagIndex = 4;
+	LadderMoveDef.FlagIndex = 3;
 	LadderMoveDef.bCustom = false;
 
 	NavOffMeshConnectionDefinition FallMoveDef;
 	FallMoveDef.ConnIndex = 4;
 	FallMoveDef.ConnName = "Fall";
 	FallMoveDef.AreaIndex = 1;
-	FallMoveDef.FlagIndex = 5;
+	FallMoveDef.FlagIndex = 4;
 	FallMoveDef.bCustom = false;
 
 	NavOffMeshConnectionDefinition PlatformMoveDef;
 	PlatformMoveDef.ConnIndex = 5;
 	PlatformMoveDef.ConnName = "Platform";
 	PlatformMoveDef.AreaIndex = 1;
-	PlatformMoveDef.FlagIndex = 6;
+	PlatformMoveDef.FlagIndex = 5;
 	PlatformMoveDef.bCustom = false;
+
+	NavOffMeshConnectionDefinition TeleportMoveDef;
+	TeleportMoveDef.ConnIndex = 6;
+	TeleportMoveDef.ConnName = "Teleport";
+	TeleportMoveDef.AreaIndex = 5;
+	TeleportMoveDef.FlagIndex = 6;
+	TeleportMoveDef.bCustom = false;
 
 	NewProfile.ConnectionDefinitions.push_back(WalkMoveDef);
 	NewProfile.ConnectionDefinitions.push_back(CrouchMoveDef);
@@ -256,6 +289,7 @@ NavGameProfile* CreateNewGameProfile()
 	NewProfile.ConnectionDefinitions.push_back(LadderMoveDef);
 	NewProfile.ConnectionDefinitions.push_back(FallMoveDef);
 	NewProfile.ConnectionDefinitions.push_back(PlatformMoveDef);
+	NewProfile.ConnectionDefinitions.push_back(TeleportMoveDef);
 		
 	NavMeshDefinition DefaultMesh;
 	NewProfile.MeshDefinitions.push_back(DefaultMesh);
@@ -268,6 +302,7 @@ NavGameProfile* CreateNewGameProfile()
 	DefaultProfile.MovementFlags |= FallFlagDef.FlagId;
 	DefaultProfile.MovementFlags |= LadderFlagDef.FlagId;
 	DefaultProfile.MovementFlags |= PlatformFlagDef.FlagId;
+	DefaultProfile.MovementFlags |= TeleportFlagDef.FlagId;
 	
 	for (int i = 0; i < 32; i++)
 	{
@@ -275,7 +310,9 @@ NavGameProfile* CreateNewGameProfile()
 	}
 
 	DefaultProfile.AreaCosts[2] = 2.0f;
-	DefaultProfile.AreaCosts[3] = 10.0f;
+	DefaultProfile.AreaCosts[3] = 2.0f;
+	DefaultProfile.AreaCosts[4] = 10.0f;
+	DefaultProfile.AreaCosts[5] = 0.1f;
 
 	NewProfile.ProfileDefinitions.push_back(DefaultProfile);
 
@@ -1130,6 +1167,12 @@ void LoadProfileConfig(string ProfileName)
 					continue;
 				}
 
+				if (!_stricmp(keyChar, "is_teleport"))
+				{
+					CurrFlag->bTeleport = (!_stricmp(valueChar, "true"));
+					continue;
+				}
+
 				if (!_stricmp(keyChar, "is_custom"))
 				{
 					CurrFlag->bCustom = (!_stricmp(valueChar, "true"));
@@ -1440,6 +1483,7 @@ void OutputProfileConfig(NavGameProfile* Profile)
 		fprintf(fp, "\t\tflag_id: %u\n", it->FlagId);
 		fprintf(fp, "\t\tflag_name: %s\n", it->FlagName.c_str());
 		fprintf(fp, "\t\tflag_tech_name: %s\n", it->TechnicalName.c_str());
+		fprintf(fp, "\t\tis_teleport: %s\n", (it->bTeleport) ? "true" : "false");
 		fprintf(fp, "\t\tis_custom: %s\n", (it->bCustom) ? "true" : "false");
 		fprintf(fp, "\t\tR: %.1f\n", it->R);
 		fprintf(fp, "\t\tG: %.1f\n", it->G);
@@ -1537,7 +1581,7 @@ void OutputProfileConfig(NavGameProfile* Profile)
 
 	fprintf(fp, "\n");
 
-	fprintf(fp, "nav_hint_count: %u\n", Profile->ProfileDefinitions.size());
+	fprintf(fp, "nav_hint_count: %u\n", Profile->NavHints.size());
 	fprintf(fp, "nav_hints:\n");
 
 	int HintIndex = 0;
@@ -1785,8 +1829,23 @@ void OutputIncludeHeader(NavGameProfile* Profile)
 	fprintf(fp, "\t\tdefault:\n");
 	fprintf(fp, "\t\t\tsprintf(outName, \"Undefined\");\n");
 	fprintf(fp, "\t\t\tbreak;\n");
+	fprintf(fp, "\t}\n");
+	fprintf(fp, "}\n\n");
 
+	fprintf(fp, "// Returns true if this flag is a teleport move (i.e. not affected by doors or other obstacles)\n");
+	fprintf(fp, "inline bool IsFlagTeleportType(NavMovementFlag Flag)\n");
+	fprintf(fp, "{\n");
+	fprintf(fp, "\tswitch(Flag)\n");
+	fprintf(fp, "\t{\n");
 
+	for (auto it = AllFlags.begin(); it != AllFlags.end(); it++)
+	{
+		fprintf(fp, "\t\tcase %s:\n", it->TechnicalName.c_str());
+		fprintf(fp, "\t\t\treturn %s;\n", (it->bTeleport) ? "true" : "false");
+	}
+
+	fprintf(fp, "\t\tdefault:\n");
+	fprintf(fp, "\t\t\treturn false;\n");
 	fprintf(fp, "\t}\n");
 	fprintf(fp, "}\n\n");
 
