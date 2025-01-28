@@ -1876,20 +1876,24 @@ void OutputIncludeHeader(NavGameProfile* Profile)
 	fprintf(fp, "inline void PopulateBaseAgentProfiles()\n");
 	fprintf(fp, "{\n");
 	fprintf(fp, "\tBaseAgentProfiles.clear();\n\n");
+
+	int CurrIndex = 0;
+
 	for (auto it = AllProfiles.begin(); it != AllProfiles.end(); it++)
 	{
-		fprintf(fp, "\tNavAgentProfile NewProfile;\n");
-		fprintf(fp, "\tNewProfile.NavMeshIndex = %u;\n", it->NavMeshIndex);
-		fprintf(fp, "\tNewProfile.Filters.setIncludeFlags(%u);\n", it->MovementFlags);
-		fprintf(fp, "\tNewProfile.Filters.setExcludeFlags(NAV_FLAG_DISABLED);\n");
+		fprintf(fp, "\tNavAgentProfile NewProfile%d;\n", CurrIndex);
+		fprintf(fp, "\tNewProfile%d.NavMeshIndex = %u;\n", CurrIndex, it->NavMeshIndex);
+		fprintf(fp, "\tNewProfile%d.Filters.setIncludeFlags(%u);\n", CurrIndex, it->MovementFlags);
+		fprintf(fp, "\tNewProfile%d.Filters.setExcludeFlags(NAV_FLAG_DISABLED);\n", CurrIndex);
 
 		for (auto areaIt = AllAreas.begin(); areaIt != AllAreas.end(); areaIt++)
 		{
-			fprintf(fp, "\tNewProfile.Filters.setAreaCost(%u, %.1f);\n", areaIt->NavAreaIndex, it->AreaCosts[areaIt->NavAreaIndex]);			
+			fprintf(fp, "\tNewProfile%d.Filters.setAreaCost(%u, %.1f);\n", CurrIndex, areaIt->NavAreaIndex, it->AreaCosts[areaIt->NavAreaIndex]);			
 		}
 
-		fprintf(fp, "\tBaseAgentProfiles.push_back(NewProfile);\n\n");
-		
+		fprintf(fp, "\tBaseAgentProfiles.push_back(NewProfile%d);\n\n", CurrIndex);
+
+		CurrIndex++;		
 	}
 
 	fprintf(fp, "\tNavAgentProfile DefaultProfile;\n");
@@ -1911,7 +1915,7 @@ void OutputIncludeHeader(NavGameProfile* Profile)
 	fprintf(fp, "inline const NavAgentProfile GetBaseAgentProfile(const NavProfileIndex Index)\n");
 	fprintf(fp, "{\n");
 
-	fprintf(fp, "return BaseAgentProfiles[Index];");
+	fprintf(fp, "\treturn BaseAgentProfiles[Index];\n");
 
 	fprintf(fp, "}\n\n");
 
