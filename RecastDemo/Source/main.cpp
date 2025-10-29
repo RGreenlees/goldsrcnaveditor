@@ -180,7 +180,10 @@ int main(int /*argc*/, char** /*argv*/)
 	bool markerPositionSet = false;
 
 	InputGeom* geom = 0;
-	Sample* sample = 0;
+	Sample* sample = g_samples[2].create();
+
+	if (sample)
+		sampleName = g_samples[2].name;
 
 	const string testCasesFolder = "TestCases";
 	TestCase* test = 0;
@@ -934,7 +937,7 @@ int main(int /*argc*/, char** /*argv*/)
 				showTools = !showTools;
 
 			imguiSeparator();
-			imguiLabel("Sample");
+			/*imguiLabel("Sample");
 			if (imguiButton(sampleName.c_str()))
 			{
 				if (showSample)
@@ -947,7 +950,7 @@ int main(int /*argc*/, char** /*argv*/)
 					showLevels = false;
 					showTestCases = false;
 				}
-			}
+			}*/
 
 			imguiSeparator();
 			imguiLabel("Input Map");
