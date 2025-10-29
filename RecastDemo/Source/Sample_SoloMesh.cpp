@@ -58,12 +58,12 @@ Sample_SoloMesh::Sample_SoloMesh() :
 {
 	setTool(new NavMeshTesterTool);
 }
-		
+
 Sample_SoloMesh::~Sample_SoloMesh()
 {
 	cleanup();
 }
-	
+
 void Sample_SoloMesh::cleanup()
 {
 	delete [] m_triareas;
@@ -112,7 +112,7 @@ void Sample_SoloMesh::handleSettings()
 
 	imguiUnindent();
 	imguiUnindent();
-	
+
 	char msg[64];
 	snprintf(msg, 64, "Build Time: %.1fms", m_totalBuildTimeMs);
 	imguiLabel(msg);
@@ -123,7 +123,7 @@ void Sample_SoloMesh::handleSettings()
 void Sample_SoloMesh::handleTools()
 {
 	int type = !m_tool ? TOOL_NONE : m_tool->type();
-	
+
 	if (imguiCheck("Edit Map", type == TOOL_MESH_EDITOR))
 	{
 		setTool(new MeshEditorTool);
@@ -148,7 +148,7 @@ void Sample_SoloMesh::handleTools()
 	{
 		setTool(new CrowdTool);
 	}
-	
+
 	imguiSeparatorLine();
 
 	imguiIndent();
@@ -191,7 +191,7 @@ void Sample_SoloMesh::handleDebugMode()
 		valid[DRAWMODE_POLYMESH] = m_pmesh != 0;
 		valid[DRAWMODE_POLYMESH_DETAIL] = m_dmesh != 0;
 	}
-	
+
 	int unavail = 0;
 	for (int i = 0; i < MAX_DRAWMODE; ++i)
 		if (!valid[i]) unavail++;
@@ -236,7 +236,7 @@ void Sample_SoloMesh::handleDebugMode()
 		m_drawMode = DRAWMODE_POLYMESH;
 	if (imguiCheck("Poly Mesh Detail", m_drawMode == DRAWMODE_POLYMESH_DETAIL, valid[DRAWMODE_POLYMESH_DETAIL]))
 		m_drawMode = DRAWMODE_POLYMESH_DETAIL;
-		
+
 	if (unavail)
 	{
 		imguiValue("Tick 'Keep Intermediate Results'");
@@ -248,12 +248,12 @@ void Sample_SoloMesh::handleRender()
 {
 	if (!m_geom || !m_geom->getMesh())
 		return;
-	
+
 	glEnable(GL_FOG);
 	glDepthMask(GL_TRUE);
 
 	const float texScale = 1.0f / (m_cellSize * 10.0f);
-	
+
 	if (m_drawMode != DRAWMODE_NAVMESH_TRANS)
 	{
 		// Draw mesh
@@ -262,7 +262,7 @@ void Sample_SoloMesh::handleRender()
 								m_agentMaxSlope, texScale, m_geom->getMesh()->getSurfaceTypes(), m_drawIllusionary);
 		m_geom->drawOffMeshConnections(&m_dd);
 	}
-	
+
 	glDisable(GL_FOG);
 	glDepthMask(GL_FALSE);
 
@@ -276,7 +276,7 @@ void Sample_SoloMesh::handleRender()
 
 	dtNavMesh* CurrentMesh = m_NavMeshArray[m_SelectedNavMeshIndex].m_navMesh;
 	dtNavMeshQuery* CurrentQuery = m_NavMeshArray[m_SelectedNavMeshIndex].m_navQuery;
-	
+
 	if (CurrentMesh && CurrentQuery &&
 		(m_drawMode == DRAWMODE_NAVMESH ||
 		m_drawMode == DRAWMODE_NAVMESH_TRANS ||
@@ -292,9 +292,9 @@ void Sample_SoloMesh::handleRender()
 			duDebugDrawNavMeshNodes(&m_dd, *CurrentQuery);
 		duDebugDrawNavMeshPolysWithFlags(&m_dd, *CurrentMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0,0,0,128));
 	}
-		
+
 	glDepthMask(GL_TRUE);
-	
+
 	if (m_chf && m_drawMode == DRAWMODE_COMPACT)
 		duDebugDrawCompactHeightfieldSolid(&m_dd, *m_chf);
 
@@ -336,7 +336,7 @@ void Sample_SoloMesh::handleRender()
 	if (m_chf && m_cset && m_drawMode == DRAWMODE_REGION_CONNECTIONS)
 	{
 		duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
-			
+
 		glDepthMask(GL_FALSE);
 		duDebugDrawRegionConnections(&m_dd, *m_cset);
 		glDepthMask(GL_TRUE);
@@ -353,7 +353,7 @@ void Sample_SoloMesh::handleRender()
 		duDebugDrawPolyMeshDetail(&m_dd, *m_dmesh);
 		glDepthMask(GL_TRUE);
 	}
-	
+
 	m_geom->drawConvexVolumes(m_SelectedNavMeshIndex, &m_dd);
 
 	if (m_tool)
@@ -397,9 +397,9 @@ bool Sample_SoloMesh::handleBuild()
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Input mesh is not specified.");
 		return false;
 	}
-	
+
 	cleanup();
-	
+
 	const float* bmin = m_geom->getNavMeshBoundsMin();
 	const float* bmax = m_geom->getNavMeshBoundsMax();
 	const float* verts = m_geom->getMesh()->getVerts();
@@ -407,7 +407,7 @@ bool Sample_SoloMesh::handleBuild()
 	const int nverts = m_geom->getMesh()->getVertCount();
 	const int* tris = m_geom->getMesh()->getTris();
 	const int ntris = m_geom->getMesh()->getTriCount();
-	
+
 	//
 	// Step 1. Initialize build config.
 	//
@@ -446,7 +446,7 @@ bool Sample_SoloMesh::handleBuild()
 		// Reset build times gathering.
 		m_ctx->resetTimers();
 
-		// Start the build process.	
+		// Start the build process.
 		m_ctx->startTimer(RC_TIMER_TOTAL);
 
 		m_ctx->log(RC_LOG_PROGRESS, "Building navigation:");
@@ -768,15 +768,15 @@ bool Sample_SoloMesh::handleBuild()
 		}
 		MeshIndex++;
 	}
-	
+
 	m_ctx->stopTimer(RC_TIMER_TOTAL);
 
 	// Show performance stats.
 	duLogBuildTimes(*m_ctx, m_ctx->getAccumulatedTime(RC_TIMER_TOTAL));
 	m_ctx->log(RC_LOG_PROGRESS, ">> Polymesh: %d vertices  %d polygons", m_pmesh->nverts, m_pmesh->npolys);
-	
+
 	m_totalBuildTimeMs = m_ctx->getAccumulatedTime(RC_TIMER_TOTAL)/1000.0f;
-	
+
 	if (m_tool)
 		m_tool->init(this);
 	initToolStates(this);

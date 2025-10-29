@@ -25,4 +25,8 @@
 void scanDirectoryAppend(const std::string& path, const std::string& ext, std::vector<std::string>& fileList);
 void scanDirectory(const std::string& path, const std::string& ext, std::vector<std::string>& fileList);
 
+std::string& ltrim(std::string& StringToTrim, const unsigned char* CharactersToStrip, const int NumStripCharacters);
+std::string& rtrim(std::string& StringToTrim, const unsigned char* CharactersToStrip, const int NumStripCharacters);
+std::string& trim(std::string& StringToTrim, const unsigned char* CharactersToStrip, const int NumStripCharacters);
+
 #endif // FILELIST_H

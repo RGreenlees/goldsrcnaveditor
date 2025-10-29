@@ -56,7 +56,7 @@ NavGameProfile* CreateNewGameProfile()
 {
 	NavGameProfile NewProfile;
 	NewProfile.GameName = "Game";
-	
+
 	NavAreaDefinition DefaultNullArea;
 	DefaultNullArea.NavAreaIndex = 0;
 	DefaultNullArea.AreaName = "Unwalkable";
@@ -290,7 +290,7 @@ NavGameProfile* CreateNewGameProfile()
 	NewProfile.ConnectionDefinitions.push_back(FallMoveDef);
 	NewProfile.ConnectionDefinitions.push_back(PlatformMoveDef);
 	NewProfile.ConnectionDefinitions.push_back(TeleportMoveDef);
-		
+
 	NavMeshDefinition DefaultMesh;
 	NewProfile.MeshDefinitions.push_back(DefaultMesh);
 
@@ -303,7 +303,7 @@ NavGameProfile* CreateNewGameProfile()
 	DefaultProfile.MovementFlags |= LadderFlagDef.FlagId;
 	DefaultProfile.MovementFlags |= PlatformFlagDef.FlagId;
 	DefaultProfile.MovementFlags |= TeleportFlagDef.FlagId;
-	
+
 	for (int i = 0; i < 32; i++)
 	{
 		DefaultProfile.AreaCosts[i] = 1.0f;
@@ -1044,6 +1044,12 @@ void LoadProfileConfig(string ProfileName)
 				continue;
 			}
 
+			if (!_stricmp(keyChar, "navmesh_relative_directory"))
+			{
+				LoadedProfile->NavmeshRelativeDirectory = valueChar;
+				continue;
+			}
+
 			if (!_stricmp(keyChar, "flags"))
 			{
 				mode = 1;
@@ -1470,6 +1476,7 @@ void OutputProfileConfig(NavGameProfile* Profile)
 	fprintf(fp, "---\n");
 	fprintf(fp, "game_name: %s\n", Profile->GameName.c_str());
 	fprintf(fp, "game_directory: %s\n\n", Profile->GameDirectory.c_str());
+	fprintf(fp, "navmesh_relative_directory: %s\n\n", Profile->NavmeshRelativeDirectory.c_str());
 
 	fprintf(fp, "flag_count: %u\n", Profile->FlagDefinitions.size());
 	fprintf(fp, "flags:\n");
@@ -1619,7 +1626,7 @@ void OutputIncludeHeader(NavGameProfile* Profile)
 	{
 		HeaderFileName = "profile";
 	}
-	
+
 	HeaderFileName.append(".h");
 
 	string FileName = "Profiles/" + HeaderFileName;
@@ -1641,7 +1648,7 @@ void OutputIncludeHeader(NavGameProfile* Profile)
 	fprintf(fp, "// Possible movement types. Defines the actions the bot needs to take to traverse this node\n");
 	fprintf(fp, "enum NavMovementFlag\n");
 	fprintf(fp, "{\n");
-	
+
 	vector<NavFlagDefinition> AllFlags = GetAllNavFlagDefinitions();
 
 	for (auto it = AllFlags.begin(); it != AllFlags.end(); it++)
@@ -1751,7 +1758,7 @@ void OutputIncludeHeader(NavGameProfile* Profile)
 
 	fprintf(fp, "\t\tdefault:\n");
 	fprintf(fp, "\t\t\treturn NAV_FLAG_DISABLED;\n");
-	
+
 
 	fprintf(fp, "\t}\n");
 	fprintf(fp, "}\n\n");
@@ -1888,12 +1895,12 @@ void OutputIncludeHeader(NavGameProfile* Profile)
 
 		for (auto areaIt = AllAreas.begin(); areaIt != AllAreas.end(); areaIt++)
 		{
-			fprintf(fp, "\tNewProfile%d.Filters.setAreaCost(%u, %.1f);\n", CurrIndex, areaIt->NavAreaIndex, it->AreaCosts[areaIt->NavAreaIndex]);			
+			fprintf(fp, "\tNewProfile%d.Filters.setAreaCost(%u, %.1f);\n", CurrIndex, areaIt->NavAreaIndex, it->AreaCosts[areaIt->NavAreaIndex]);
 		}
 
 		fprintf(fp, "\tBaseAgentProfiles.push_back(NewProfile%d);\n\n", CurrIndex);
 
-		CurrIndex++;		
+		CurrIndex++;
 	}
 
 	fprintf(fp, "\tNavAgentProfile DefaultProfile;\n");
@@ -1920,11 +1927,7 @@ void OutputIncludeHeader(NavGameProfile* Profile)
 	fprintf(fp, "}\n\n");
 
 
-
 	fprintf(fp, "#endif // NAV_CONSTANTS_H");
 
-
-
 	fclose(fp);
-
 }

@@ -2,6 +2,8 @@
 game_name: Half-Life Base
 game_directory: E:\SteamLibrary\steamapps\common\Half-Life\valve
 
+navmesh_relative_directory: addons/dtbot/navmeshes
+
 flag_count: 8
 flags:
 	id: 0
@@ -197,7 +199,7 @@ agent_profiles:
 		agent_name: Base Player
 		technical_name: NAV_PROFILE_PLAYER
 		mesh_index: 0
-		area_costs: {1.0,1.0,2.0,2.0,10.0,0.1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0}
+		area_costs: {0.0,1.0,2.0,2.0,10.0,0.1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0}
 		movement_flags: 127
 
 nav_hint_count: 0

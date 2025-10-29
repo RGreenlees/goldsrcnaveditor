@@ -33,14 +33,14 @@ void scanDirectoryAppend(const string& path, const string& ext, vector<string>& 
 {
 #ifdef WIN32
 	string pathWithExt = path + "/*" + ext;
-	
+
 	_finddata_t dir;
 	intptr_t fh = _findfirst(pathWithExt.c_str(), &dir);
 	if (fh == -1L)
 	{
 		return;
 	}
-	
+
 	do
 	{
 		filelist.push_back(dir.name);
@@ -54,7 +54,7 @@ void scanDirectoryAppend(const string& path, const string& ext, vector<string>& 
 	{
 		return;
 	}
-	
+
 	size_t extLen = strlen(ext.c_str());
 	while ((current = readdir(dp)) != 0)
 	{
@@ -66,7 +66,7 @@ void scanDirectoryAppend(const string& path, const string& ext, vector<string>& 
 	}
 	closedir(dp);
 #endif
-	
+
 	// Sort the list of files alphabetically.
 	std::sort(filelist.begin(), filelist.end());
 }
@@ -75,4 +75,42 @@ void scanDirectory(const string& path, const string& ext, vector<string>& fileli
 {
 	filelist.clear();
 	scanDirectoryAppend(path, ext, filelist);
+}
+
+
+std::string& ltrim(std::string& StringToTrim, const unsigned char* CharactersToStrip, const int NumStripCharacters)
+{
+	if (!CharactersToStrip) { return StringToTrim; }
+
+	StringToTrim.erase(StringToTrim.begin(), std::find_if(StringToTrim.begin(), StringToTrim.end(), [CharactersToStrip, NumStripCharacters](unsigned char ch)
+		{
+			for (int i = 0; i < NumStripCharacters; i++)
+			{
+				if (ch == CharactersToStrip[i]) { return false; }
+			}
+			return true;
+		}));
+
+	return StringToTrim;
+}
+
+std::string& rtrim(std::string& StringToTrim, const unsigned char* CharactersToStrip, const int NumStripCharacters)
+{
+	if (!CharactersToStrip) { return StringToTrim; }
+
+	StringToTrim.erase(std::find_if(StringToTrim.rbegin(), StringToTrim.rend(), [CharactersToStrip, NumStripCharacters](unsigned char ch)
+		{
+			for (int i = 0; i < NumStripCharacters; i++)
+			{
+				if (ch == CharactersToStrip[i]) { return false; }
+			}
+			return true;
+		}).base(), StringToTrim.end());
+
+	return StringToTrim;
+}
+
+std::string& trim(std::string& s, const unsigned char* CharactersToStrip, const int NumStripCharacters)
+{
+	return ltrim(rtrim(s, CharactersToStrip, NumStripCharacters), CharactersToStrip, NumStripCharacters);
 }
