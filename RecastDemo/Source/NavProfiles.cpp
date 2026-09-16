@@ -74,7 +74,7 @@ NavGameProfile* CreateNewGameProfile()
 	DefaultWalkArea.AreaName = "Walk";
 	DefaultWalkArea.TechnicalName = "NAV_AREA_WALK";
 	DefaultWalkArea.AreaId = 1;
-	DefaultWalkArea.FlagIndex = 1;
+	DefaultWalkArea.FlagIndex = 0;
 	DefaultWalkArea.bCustom = false;
 	DefaultWalkArea.R = 0.0f;
 	DefaultWalkArea.G = 192.0f;
@@ -86,7 +86,7 @@ NavGameProfile* CreateNewGameProfile()
 	DefaultCrouchArea.AreaName = "Crouch";
 	DefaultCrouchArea.TechnicalName = "NAV_AREA_CROUCH";
 	DefaultCrouchArea.AreaId = 2;
-	DefaultCrouchArea.FlagIndex = 2;
+	DefaultCrouchArea.FlagIndex = 1;
 	DefaultCrouchArea.bCustom = false;
 	DefaultCrouchArea.R = 9.0f;
 	DefaultCrouchArea.G = 130.0f;
@@ -98,7 +98,7 @@ NavGameProfile* CreateNewGameProfile()
 	DefaultObstructedArea.AreaName = "Obstructed";
 	DefaultObstructedArea.TechnicalName = "NAV_AREA_OBSTRUCTED";
 	DefaultObstructedArea.AreaId = 3;
-	DefaultObstructedArea.FlagIndex = 3;
+	DefaultObstructedArea.FlagIndex = 2;
 	DefaultObstructedArea.bCustom = false;
 	DefaultObstructedArea.R = 255.0f;
 	DefaultObstructedArea.G = 64.0f;
@@ -110,7 +110,7 @@ NavGameProfile* CreateNewGameProfile()
 	DefaultHazardArea.AreaName = "Hazard";
 	DefaultHazardArea.TechnicalName = "NAV_AREA_HAZARD";
 	DefaultHazardArea.AreaId = 4;
-	DefaultHazardArea.FlagIndex = 1;
+	DefaultHazardArea.FlagIndex = 2;
 	DefaultHazardArea.bCustom = false;
 	DefaultHazardArea.R = 192.0f;
 	DefaultHazardArea.G = 32.0f;
@@ -755,7 +755,7 @@ NavAgentProfile* CreateNewAgentProfile()
 
 	for (auto it = AllFlags.begin(); it != AllFlags.end(); it++)
 	{
-		if (!it->bCustom)
+		if (!it->bCustom && it->FlagId != (1 << 31))
 		{
 			NewAgentProfile.MovementFlags |= it->FlagId;
 		}

@@ -180,15 +180,18 @@ int main(int /*argc*/, char** /*argv*/)
 	bool markerPositionSet = false;
 
 	InputGeom* geom = 0;
+	BuildContext ctx;
+
 	Sample* sample = g_samples[2].create();
 
 	if (sample)
+	{
 		sampleName = g_samples[2].name;
+		sample->setContext(&ctx);
+	}
 
 	const string testCasesFolder = "TestCases";
 	TestCase* test = 0;
-
-	BuildContext ctx;
 
 	// Fog.
 	float fogColor[4] = { 0.32f, 0.31f, 0.30f, 1.0f };
